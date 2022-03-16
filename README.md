@@ -1,0 +1,1 @@
+# effective-charity-db
