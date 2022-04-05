@@ -132,17 +132,16 @@ CREATE TABLE donor(
 
 DROP TABLE IF EXISTS donation;
 CREATE TABLE donation(
-	donation_donor INT NOT NULL,
+	donation_id INT AUTO_INCREMENT PRIMARY KEY,
+	donation_donor INT,
     donation_charity INT NOT NULL,
     donation_datetime DATETIME NOT NULL,
     donation_amount INT NOT NULL,
-    PRIMARY KEY(donation_donor, donation_charity, donation_datetime),
 	FOREIGN KEY (donation_donor) REFERENCES donor(donor_id)
-		ON UPDATE CASCADE ON DELETE RESTRICT,
+		ON UPDATE CASCADE ON DELETE SET NULL,
 	FOREIGN KEY (donation_charity) REFERENCES charity(charity_id)
 		ON UPDATE CASCADE ON DELETE RESTRICT
 );
-
 
 -- look into constraints
 -- function to fetch a global income rank based on input annual income -> application calls it, when user types in their income
