@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS effective_giving;
 CREATE DATABASE IF NOT EXISTS effective_giving;
 
 USE effective_giving;
@@ -52,12 +53,10 @@ CREATE TABLE charity(
 		ON UPDATE CASCADE ON DELETE SET NULL
 );
 
--- ❓ how to restrict from adding projects to charities that are in another cause area than the area first added?
-	-- create a relationship between the charity and cause area and then make the projects cause area match the area the charity works on?
-
 DROP TABLE IF EXISTS project;
 -- a project is a weak entity in relation to both charity and intervention
 CREATE TABLE project (
+	-- checking that the cause area of the project matches the cause area of the charity
 	intervention VARCHAR(64) NOT NULL,
     charity INT NOT NULL,
     project_name VARCHAR(64) NOT NULL, 
@@ -142,7 +141,3 @@ CREATE TABLE donation(
 	FOREIGN KEY (donation_charity) REFERENCES charity(charity_id)
 		ON UPDATE CASCADE ON DELETE RESTRICT
 );
-
--- look into constraints
--- function to fetch a global income rank based on input annual income -> application calls it, when user types in their income
-
