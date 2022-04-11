@@ -48,9 +48,7 @@ CREATE TABLE charity(
 	charity_country INT,
     donations_link VARCHAR(64),
 	FOREIGN KEY (charity_cause) REFERENCES cause_area(cause_id)
-		ON UPDATE CASCADE ON DELETE RESTRICT,
-    FOREIGN KEY (charity_country) REFERENCES country(country_id)
-		ON UPDATE CASCADE ON DELETE SET NULL
+		ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 DROP TABLE IF EXISTS project;
