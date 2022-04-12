@@ -46,7 +46,7 @@ CREATE TABLE charity(
     charity_type ENUM("Community", "Program Delivery", "Research") NOT NULL,
     charity_cause INT NOT NULL,
 	charity_country INT,
-    donations_link VARCHAR(64),
+    donations_link VARCHAR(128),
 	FOREIGN KEY (charity_cause) REFERENCES cause_area(cause_id)
 		ON UPDATE CASCADE ON DELETE RESTRICT
 );
@@ -85,13 +85,11 @@ DROP TABLE IF EXISTS evaluation;
 CREATE TABLE evaluation (
 	evaluator INT NOT NULL,
     charity INT NOT NULL,
-	evaluationYear YEAR, 
-    
+	evaluation_year YEAR, 
     -- ❓ should I use an enum here or some other syntax?
-    
-    effectivenessRank ENUM('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'),
+    effectiveness_rank ENUM('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'),
     -- each evaluator makes a rating of organizations each year
-    PRIMARY KEY (evaluationYear, effectivenessRank, evaluator),
+    PRIMARY KEY (evaluation_year, effectiveness_rank, evaluator),
     FOREIGN KEY (evaluator) REFERENCES evaluator(evaluator_id)
 		ON UPDATE CASCADE ON DELETE RESTRICT,
 	FOREIGN KEY (charity) REFERENCES charity(charity_id)
