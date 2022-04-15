@@ -609,26 +609,26 @@ CREATE PROCEDURE delete_source(name VARCHAR(128))
 DROP FUNCTION IF EXISTS get_income_rank; 
 DELIMITER $$
 CREATE FUNCTION get_income_rank(income DECIMAL(9,2))
-   RETURNS DECIMAL(4, 2) DETERMINISTIC
-   CONTAINS SQL
-   BEGIN 
-   DECLARE rank_ DECIMAL(4, 2) DEFAULT 0;
-   DECLARE total_ranks INT;
-   DECLARE counter INT DEFAULT 0;
-   SET total_ranks = (SELECT COUNT(*) FROM income_rank);
+	RETURNS DECIMAL(4, 2) DETERMINISTIC
+	CONTAINS SQL
+	BEGIN 
+	DECLARE rank_ DECIMAL(4, 2) DEFAULT 0;
+	DECLARE income_ DECIMAL(9, 2) DEFAULT 0;
+	DECLARE counter INT DEFAULT 0;
+	DECLARE total_ranks INT;
+	DECLARE condition_ DECIMAL(9,2);
+	SET total_ranks = (SELECT COUNT(*) FROM income_rank);
    
-   WHILE counter <= total_ranks DO
-        IF (SELECT annual_income FROM income_rank LIMIT counter, 1) > rank_ AND
-        (SELECT annual_income FROM income_rank LIMIT counter, 1) < income THEN
-			SET rank_ = (SELECT percentile FROM income_rank LIMIT counter, 1);
+	WHILE counter < total_ranks DO
+		SET condition_ = (SELECT annual_income FROM income_rank LIMIT counter, 1);
+        IF  condition_ > income_ AND condition_ < income THEN
+		SET income_ = (SELECT annual_income FROM income_rank LIMIT counter, 1);
 		END IF;
         SET counter = counter + 1;
-		END WHILE;
-   RETURN(rank_); 
-   END $$
-   
-   DELIMITER ; 
-   
+	END WHILE;
+	SET rank_ = (SELECT percentile FROM income_rank WHERE annual_income = income_);
+	RETURN(rank_); 
+	END $$
 
 
 -- table: charity
