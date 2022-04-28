@@ -48,7 +48,8 @@ public class Main extends AbstractMenu {
           inputCorrect = true;
         case "2":
           inputCorrect = true;
-          Menu mods = new Modifications(conn, in);
+          Menu mods = new Main(conn, in);
+          mods.run();
         default:
           // process the standard or incorrect input
           inputCorrect = this.defaultInputHandler(input, new Home(this.conn));
