@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 /**
- * Represent the menu for admin data modifications.
+ * Represents the menu for admin data modifications.
  */
 public class MainModifications extends AbstractMenu {
 

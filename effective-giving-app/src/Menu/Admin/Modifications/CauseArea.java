@@ -1,13 +1,14 @@
 package Menu.Admin.Modifications;
 
-import Menu.AbstractMenu;
 import Menu.Home;
-import Menu.Menu;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class CauseArea extends AbstractMenu {
+/**
+ * Represents the Cause Area modification menu for the admin.
+ */
+public class CauseArea extends AbstractModification {
 
   /**
    * Creates an instance of this class.
@@ -15,7 +16,7 @@ public class CauseArea extends AbstractMenu {
    * @param conn open SQL database connection
    * @param in   open input Scanner
    */
-  protected CauseArea(Connection conn, Scanner in) {
+  public CauseArea(Connection conn, Scanner in) {
     super(conn, in);
   }
 
@@ -41,9 +42,11 @@ public class CauseArea extends AbstractMenu {
       // process the input
       switch (input.toLowerCase()) {
         case "1":
-          Menu cause = new CauseArea(this.conn, this.in);
+          this.add();
         case "2":
+          this.update();
         case "3":
+          this.delete();
         default:
           // process the standard or incorrect input
           inputCorrect = this.defaultInputHandler(input, new Home(this.conn),
@@ -51,6 +54,33 @@ public class CauseArea extends AbstractMenu {
                   this.in));
       }
     }
+  }
+
+  @Override
+  protected void add() throws SQLException {
 
   }
+
+  protected void update() throws SQLException {
+    String input = this.in.nextLine();
+    // init marker to check if the input is correct
+    boolean inputCorrect = false;
+    switch (input.toLowerCase()) {
+      case "1":
+        this.update();
+      case "2":
+      case "3":
+      default:
+        // process the standard or incorrect input
+        inputCorrect = this.defaultInputHandler(input, new Home(this.conn),
+            new MainModifications(this.conn,
+                this.in));
+    }
+  }
+
+  @Override
+  protected void delete() throws SQLException {
+
+  }
+
 }
