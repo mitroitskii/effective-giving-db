@@ -27,8 +27,9 @@ public abstract class AbstractMenu implements Menu {
    * Prints the standard choose your option prompt.
    */
   protected void printStandardPrompt() {
-    System.out.print("Choose the option and type in its number, or type in \"Home\" to go to the "
+    System.out.print("Choose the option and type in its number, type in \"Home\" to go to the "
         + "main menu"
+        + "\"Back\" to go back to the previous menu"
         + "or \"Quit\" to quit the app: ");
   }
 
@@ -65,7 +66,7 @@ public abstract class AbstractMenu implements Menu {
         this.exit();
       case "back":
         previous.run();
-      case "main":
+      case "home":
         main.run();
       default:
         System.out.println("⚠️ You typed in \"" + input + "\". There is no such option in this "
