@@ -12,7 +12,7 @@ public class Main extends AbstractMenu {
 
 
   @Override
-  void printStandardPrompt() {
+  protected void printStandardPrompt() {
     System.out.print("Choose the option and type in its number, or type in "
         + "\"Quit\" to quit the app: ");
   }
@@ -23,6 +23,7 @@ public class Main extends AbstractMenu {
     Scanner in = new Scanner(System.in);
     state.setScanner(in);
 
+    // print the menu options
     System.out.println("👋 Welcome to the Effective Giving Community!");
     System.out.println();
     System.out.println("Are you a new donor, a returning donor, or an admin?");
@@ -49,6 +50,7 @@ public class Main extends AbstractMenu {
         case "3":
           inputCorrect = true;
         default:
+          // process the standard or incorrect input 
           inputCorrect = this.defaultInputHandler(input, state, new Main());
       }
     }
