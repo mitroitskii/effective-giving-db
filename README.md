@@ -1,1 +1,1 @@
-# effective-charity-db
+# effective-giving-db
