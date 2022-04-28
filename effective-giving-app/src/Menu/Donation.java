@@ -1,13 +1,23 @@
 package Menu;
 
-import App.State;
+import java.sql.Connection;
 import java.sql.SQLException;
-import org.jetbrains.annotations.NotNull;
+import java.util.Scanner;
 
 public class Donation extends AbstractMenu {
 
+  /**
+   * Creates an instance of this class.
+   *
+   * @param conn open SQL database connection
+   * @param in   open input Scanner
+   */
+  protected Donation(Connection conn, Scanner in) {
+    super(conn, in);
+  }
+
   @Override
-  public void run(@NotNull State state) throws SQLException {
+  public void run() throws SQLException {
 
   }
 

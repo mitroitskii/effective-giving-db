@@ -1,15 +1,23 @@
 package Menu;
 
-import App.State;
+import Menu.Admin.Admin;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents the main application menu.
  */
 public class Main extends AbstractMenu {
 
+  /**
+   * Creates an instance of this class.
+   *
+   * @param conn open SQL database connection
+   */
+  public Main(Connection conn) {
+    super(conn, null);
+  }
 
   @Override
   protected void printStandardPrompt() {
@@ -17,11 +25,10 @@ public class Main extends AbstractMenu {
         + "\"Quit\" to quit the app: ");
   }
 
-  public void run(@NotNull State state) throws SQLException {
+  public void run() throws SQLException {
 
     // initialize the input Scanner and sets its value to the state
     Scanner in = new Scanner(System.in);
-    state.setScanner(in);
 
     // print the menu options
     System.out.println("👋 Welcome to the Effective Giving Community!");
@@ -44,14 +51,13 @@ public class Main extends AbstractMenu {
       // process the input
       switch (input.toLowerCase()) {
         case "1":
-          inputCorrect = true;
         case "2":
-          inputCorrect = true;
         case "3":
-          inputCorrect = true;
+          Menu admin = new Admin(this.conn, this.in);
+          admin.run();
         default:
-          // process the standard or incorrect input 
-          inputCorrect = this.defaultInputHandler(input, state, new Main());
+          // process the standard or incorrect input
+          inputCorrect = this.defaultInputHandler(input, new Main(this.conn));
       }
     }
 

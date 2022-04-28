@@ -36,12 +36,9 @@ public class App {
       exit(1);
     }
 
-    State state = new State();
-    state.setConnection(conn);
-
     try {
-      Menu main = new Main();
-      main.run(state);
+      Menu main = new Main(conn);
+      main.run();
     } catch (SQLException e) {
       System.out.println(e.getMessage() + e.getSQLState() + e.getErrorCode());
     }
