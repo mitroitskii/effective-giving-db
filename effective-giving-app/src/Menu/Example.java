@@ -1,6 +1,5 @@
 package Menu;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,13 +7,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Main application menu.
+ * Home application menu.
  */
 public class Example {
 
-  public static void run(State state) throws SQLException {
+  public static void run() throws SQLException {
 
-    Connection conn = state.getConnection();
+//    Connection conn = state.getConnection();
 
     // initialize the input Scanner
     Scanner in = new Scanner(System.in);
@@ -27,7 +26,7 @@ public class Example {
 
     // Get the set of all character names and store in the array
     String query = "SELECT character_name FROM lotr_character;";
-    pstmt = conn.prepareStatement(query);
+//    pstmt = conn.prepareStatement(query);
     pstmt.clearParameters();
     rs = pstmt.executeQuery();
     while (rs.next()) {
@@ -52,7 +51,7 @@ public class Example {
 
     // Call the track_character SQL function
     query = "CALL track_character(?);";
-    pstmt = conn.prepareStatement(query);
+//    pstmt = conn.prepareStatement(query);
     pstmt.clearParameters();
     pstmt.setString(1, charName);
     rs = pstmt.executeQuery();
@@ -72,7 +71,7 @@ public class Example {
     rs.close();
     pstmt.close();
 
-    conn.close();
+//    conn.close();
 
   }
 

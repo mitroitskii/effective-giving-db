@@ -29,7 +29,7 @@ public abstract class AbstractMenu implements Menu {
    * Prints the standard choose your option prompt.
    */
   protected void printStandardPrompt() {
-    System.out.print("Choose the option and type in its number, or type in \"Main\" to go to the "
+    System.out.print("Choose the option and type in its number, or type in \"Home\" to go to the "
         + "main menu"
         + "or \"Quit\" to quit the app: ");
   }

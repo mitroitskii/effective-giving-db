@@ -1,7 +1,7 @@
 package Menu.Admin;
 
 import Menu.AbstractMenu;
-import Menu.Main;
+import Menu.Home;
 import Menu.Menu;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -10,7 +10,7 @@ import java.util.Scanner;
 /**
  * Represent the menu for the admin.
  */
-public class Admin extends AbstractMenu {
+public class Main extends AbstractMenu {
 
   /**
    * Creates an instance of this class.
@@ -18,7 +18,7 @@ public class Admin extends AbstractMenu {
    * @param conn open SQL database connection
    * @param in   open input Scanner
    */
-  public Admin(Connection conn, Scanner in) {
+  public Main(Connection conn, Scanner in) {
     super(conn, in);
   }
 
@@ -26,6 +26,7 @@ public class Admin extends AbstractMenu {
   public void run() throws SQLException {
 
     // print the menu options
+    System.out.println("Hello Admin!");
     System.out.println("📊 Do you want to see the statistics on the data in the system or make "
         + "changes in the data?");
     System.out.println();
@@ -50,7 +51,7 @@ public class Admin extends AbstractMenu {
           Menu mods = new Modifications(conn, in);
         default:
           // process the standard or incorrect input
-          inputCorrect = this.defaultInputHandler(input, new Main(this.conn));
+          inputCorrect = this.defaultInputHandler(input, new Home(this.conn));
       }
     }
   }

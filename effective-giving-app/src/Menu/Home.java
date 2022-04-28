@@ -1,6 +1,6 @@
 package Menu;
 
-import Menu.Admin.Admin;
+import Menu.Admin.Main;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -8,14 +8,14 @@ import java.util.Scanner;
 /**
  * Represents the main application menu.
  */
-public class Main extends AbstractMenu {
+public class Home extends AbstractMenu {
 
   /**
    * Creates an instance of this class.
    *
    * @param conn open SQL database connection
    */
-  public Main(Connection conn) {
+  public Home(Connection conn) {
     super(conn, null);
   }
 
@@ -53,11 +53,11 @@ public class Main extends AbstractMenu {
         case "1":
         case "2":
         case "3":
-          Menu admin = new Admin(this.conn, this.in);
+          Menu admin = new Main(this.conn, in);
           admin.run();
         default:
           // process the standard or incorrect input
-          inputCorrect = this.defaultInputHandler(input, new Main(this.conn));
+          inputCorrect = this.defaultInputHandler(input, new Home(this.conn));
       }
     }
 

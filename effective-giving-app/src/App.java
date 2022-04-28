@@ -1,8 +1,6 @@
-package App;
-
 import static java.lang.System.exit;
 
-import Menu.Main;
+import Menu.Home;
 import Menu.Menu;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,14 +8,14 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * Main application class. Contains an entry point.
+ * Home application class. Contains an entry point.
  *
  * @author mitroitskii
  */
 public class App {
 
   /**
-   * Runs the App.App starting from the main menu. The program entry point.
+   * Runs the App starting from the main menu. The program entry point.
    *
    * @param args
    * @throws SQLException
@@ -37,7 +35,7 @@ public class App {
     }
 
     try {
-      Menu main = new Main(conn);
+      Menu main = new Home(conn);
       main.run();
     } catch (SQLException e) {
       System.out.println(e.getMessage() + e.getSQLState() + e.getErrorCode());

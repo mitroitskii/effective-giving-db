@@ -1,7 +1,7 @@
 package Menu.Admin;
 
 import Menu.AbstractMenu;
-import Menu.Main;
+import Menu.Home;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -25,11 +25,16 @@ public class Modifications extends AbstractMenu {
   public void run() throws SQLException {
 
     // print the menu options
-    System.out.println("📊 Do you want to see the statistics on the data in the system or make "
-        + "changes in the data?");
+    System.out.println("What changes do you want to make?");
     System.out.println();
-    System.out.println("1. See the statistics");
-    System.out.println("2. Change or add the data");
+    System.out.println("1. Modify Cause Areas");
+    System.out.println("2. Modify Problems");
+    System.out.println("3. Modify Interventions");
+    System.out.println("4. Modify Charities");
+    System.out.println("5. Modify Projects");
+    System.out.println("6. Modify Evaluators");
+    System.out.println("7. Modify Evaluations");
+    System.out.println("8. Modify New Donor Sources");
     System.out.println();
 
     // init marker to check if the input is correct
@@ -49,7 +54,7 @@ public class Modifications extends AbstractMenu {
 
         default:
           // process the standard or incorrect input
-          inputCorrect = this.defaultInputHandler(input, new Main(this.conn));
+          inputCorrect = this.defaultInputHandler(input, new Home(this.conn));
       }
     }
   }
