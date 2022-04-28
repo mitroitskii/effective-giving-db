@@ -1,7 +1,9 @@
 package Menu.Admin.Modifications;
 
 import Menu.AbstractMenu;
+import Menu.Admin.MainAdmin;
 import Menu.Home;
+import Menu.Menu;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -9,7 +11,7 @@ import java.util.Scanner;
 /**
  * Represent the menu for admin data modifications.
  */
-public class Main extends AbstractMenu {
+public class MainModifications extends AbstractMenu {
 
   /**
    * Creates an instance of this class.
@@ -17,7 +19,7 @@ public class Main extends AbstractMenu {
    * @param conn open SQL database connection
    * @param in   open input Scanner
    */
-  public Main(Connection conn, Scanner in) {
+  public MainModifications(Connection conn, Scanner in) {
     super(conn, in);
   }
 
@@ -48,7 +50,7 @@ public class Main extends AbstractMenu {
       // process the input
       switch (input.toLowerCase()) {
         case "1":
-
+          Menu cause = new CauseArea(this.conn, this.in);
         case "2":
         case "3":
         case "4":
@@ -58,7 +60,8 @@ public class Main extends AbstractMenu {
         case "8":
         default:
           // process the standard or incorrect input
-          inputCorrect = this.defaultInputHandler(input, new Home(this.conn));
+          inputCorrect = this.defaultInputHandler(input, new Home(this.conn),
+              new MainAdmin(this.conn, this.in));
       }
     }
   }

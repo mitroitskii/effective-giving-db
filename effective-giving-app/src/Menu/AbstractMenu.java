@@ -12,8 +12,6 @@ public abstract class AbstractMenu implements Menu {
   protected Connection conn;
   protected Scanner in;
 
-  // TODO donor ID to class Donor and then extend nested menus from there
-
   /**
    * Creates an instance of this class.
    *
@@ -54,15 +52,19 @@ public abstract class AbstractMenu implements Menu {
   /**
    * Handles all the other input options besides the ones specified in this menu.
    *
-   * @param input the input string
-   * @param main  the instance of the main menu class
+   * @param input    the input string
+   * @param main     the instance of the main menu class
+   * @param previous the instance of the previous menu class
    * @return false if the input passed is not recognized
    * @throws SQLException if any of the operations with the database throw an error
    */
-  protected boolean defaultInputHandler(String input, Menu main) throws SQLException {
+  protected boolean defaultInputHandler(String input, Menu main, Menu previous)
+      throws SQLException {
     switch (input.toLowerCase()) {
       case "quit":
         this.exit();
+      case "back":
+        previous.run();
       case "main":
         main.run();
       default:
@@ -76,9 +78,16 @@ public abstract class AbstractMenu implements Menu {
 
   /**
    * Exits the program
+   *
+   * @throws SQLException if there is an error when closing the database connection
    */
-  protected void exit() {
+  protected void exit() throws SQLException {
+    // close database connection
+    this.conn.close();
+    // close scanner
+    this.in.close();
     System.out.println("See you soon!");
+    // exit the program
     System.exit(0);
   }
 

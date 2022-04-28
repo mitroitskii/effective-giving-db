@@ -10,7 +10,7 @@ import java.util.Scanner;
 /**
  * Represent the menu for the admin.
  */
-public class Main extends AbstractMenu {
+public class MainAdmin extends AbstractMenu {
 
   /**
    * Creates an instance of this class.
@@ -18,7 +18,7 @@ public class Main extends AbstractMenu {
    * @param conn open SQL database connection
    * @param in   open input Scanner
    */
-  public Main(Connection conn, Scanner in) {
+  public MainAdmin(Connection conn, Scanner in) {
     super(conn, in);
   }
 
@@ -48,11 +48,11 @@ public class Main extends AbstractMenu {
           inputCorrect = true;
         case "2":
           inputCorrect = true;
-          Menu mods = new Main(conn, in);
+          Menu mods = new MainAdmin(conn, in);
           mods.run();
         default:
           // process the standard or incorrect input
-          inputCorrect = this.defaultInputHandler(input, new Home(this.conn));
+          inputCorrect = this.defaultInputHandler(input, new Home(this.conn), new Home(this.conn));
       }
     }
   }

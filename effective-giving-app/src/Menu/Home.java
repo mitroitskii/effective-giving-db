@@ -1,6 +1,6 @@
 package Menu;
 
-import Menu.Admin.Main;
+import Menu.Admin.MainAdmin;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -28,7 +28,7 @@ public class Home extends AbstractMenu {
   public void run() throws SQLException {
 
     // initialize the input Scanner and sets its value to the state
-    Scanner in = new Scanner(System.in);
+    this.in = new Scanner(System.in);
 
     // print the menu options
     System.out.println("👋 Welcome to the Effective Giving Community!");
@@ -53,11 +53,11 @@ public class Home extends AbstractMenu {
         case "1":
         case "2":
         case "3":
-          Menu admin = new Main(this.conn, in);
+          Menu admin = new MainAdmin(this.conn, in);
           admin.run();
         default:
           // process the standard or incorrect input
-          inputCorrect = this.defaultInputHandler(input, new Home(this.conn));
+          inputCorrect = this.defaultInputHandler(input, new Home(this.conn), this);
       }
     }
 
