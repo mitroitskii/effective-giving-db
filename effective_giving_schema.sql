@@ -45,7 +45,6 @@ CREATE TABLE charity(
 	charity_description VARCHAR(256) NOT NULL,
     charity_type ENUM("Community", "Program Delivery", "Research") NOT NULL,
     charity_cause INT NOT NULL,
-	charity_country INT,
     donations_link VARCHAR(128),
 	FOREIGN KEY (charity_cause) REFERENCES cause_area(cause_id)
 		ON UPDATE CASCADE ON DELETE RESTRICT
