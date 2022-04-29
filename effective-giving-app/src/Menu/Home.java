@@ -30,24 +30,26 @@ public class Home extends AbstractMenu {
     // initialize the input Scanner and sets its value to the state
     this.in = new Scanner(System.in);
 
-    // print the menu options
-    System.out.println("👋 Welcome to the Effective Giving Community!");
-    System.out.println();
-    System.out.println("Are you a new donor, a returning donor, or an admin?");
-    System.out.println();
-    System.out.println("1. I’m a new donor");
-    System.out.println("2. I’m a returning donor");
-    System.out.println("3. I’m an admin");
-    System.out.println();
-
     // init marker to check if the input is correct
     boolean inputCorrect = false;
 
+    // repeat this menu prompt until the input is recognized
     while (!inputCorrect) {
+      // print the menu options
+      System.out.println("👋 Welcome to the Effective Giving Community!");
+      System.out.println();
+      System.out.println("Are you a new donor, a returning donor, or an admin?");
+      System.out.println();
+      System.out.println("1. I’m a new donor");
+      System.out.println("2. I’m a returning donor");
+      System.out.println("3. I’m an admin");
+      System.out.println();
       this.printStandardPrompt();
+
       // get the user input for this menu
       String input = in.nextLine();
       System.out.println();
+
       // process the input
       switch (input.toLowerCase()) {
         case "1":
@@ -57,7 +59,7 @@ public class Home extends AbstractMenu {
           admin.run();
         default:
           // process the standard or incorrect input
-          inputCorrect = this.defaultInputHandler(input, new Home(this.conn), this);
+          inputCorrect = this.checkStandardInputOptions(input, new Home(this.conn), this);
       }
     }
 

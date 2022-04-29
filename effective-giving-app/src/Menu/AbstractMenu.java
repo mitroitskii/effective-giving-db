@@ -13,7 +13,7 @@ public abstract class AbstractMenu implements Menu {
   protected Scanner in;
 
   /**
-   * Creates an instance of this class.
+   * Creates an instance of a menu and sets its state parameters.
    *
    * @param conn open SQL database connection
    * @param in   open input Scanner
@@ -23,21 +23,27 @@ public abstract class AbstractMenu implements Menu {
     this.in = in;
   }
 
+
   /**
    * Prints the standard choose your option prompt.
    */
   protected void printStandardPrompt() {
     System.out.print("Choose the option and type in its number, type in \"Home\" to go to the "
-        + "main menu"
+        + "main menu "
         + "\"Back\" to go back to the previous menu"
         + "or \"Quit\" to quit the app: ");
   }
 
   /**
-   * Prints the success message.
+   * Prints the error message with the provided SQLException data.
+   *
+   * @param e SQLException
    */
-  protected void printSuccessMsg() {
-    System.out.println("✅ Success");
+  protected void printErrorMsg(SQLException e) {
+    System.out.println();
+    System.out.print("❌ Error executing this command with the database: ");
+    System.out.print(e.getMessage() + e.getSQLState() + e.getErrorCode());
+    System.out.println();
   }
 
   /**
@@ -45,10 +51,19 @@ public abstract class AbstractMenu implements Menu {
    *
    * @param option given user input
    */
-  protected void printNoSuchMenuOption(String option) {
+  protected void printNoSuchMenuOptionMsg(String option) {
     System.out.println(
         "⚠️ You typed in " + option + ". There is no such option in this menu. Please try again");
   }
+
+  /**
+   * Prints the message of going back to the previous menu.
+   */
+  protected void printPreviousMenuMsg() {
+    System.out.println("⏮ Going back to the previous menu");
+    System.out.println();
+  }
+
 
   /**
    * Handles all the other input options besides the ones specified in this menu.
@@ -59,19 +74,19 @@ public abstract class AbstractMenu implements Menu {
    * @return false if the input passed is not recognized
    * @throws SQLException if any of the operations with the database throw an error
    */
-  protected boolean defaultInputHandler(String input, Menu main, Menu previous)
+  protected boolean checkStandardInputOptions(String input, Menu main, Menu previous)
       throws SQLException {
     switch (input.toLowerCase()) {
       case "quit":
         this.exit();
       case "back":
+        this.printPreviousMenuMsg();
         previous.run();
       case "home":
         main.run();
       default:
-        System.out.println("⚠️ You typed in \"" + input + "\". There is no such option in this "
-            + "menu. "
-            + "Please try again!");
+        System.out.println();
+        this.printNoSuchMenuOptionMsg(input);
         System.out.println();
         return false;
     }
@@ -87,7 +102,8 @@ public abstract class AbstractMenu implements Menu {
     this.conn.close();
     // close scanner
     this.in.close();
-    System.out.println("See you soon!");
+    System.out.println();
+    System.out.println("👋 See you soon!");
     // exit the program
     System.exit(0);
   }

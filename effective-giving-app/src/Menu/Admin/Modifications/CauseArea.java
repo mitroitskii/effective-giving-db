@@ -1,7 +1,7 @@
 package Menu.Admin.Modifications;
 
-import Menu.Home;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -17,69 +17,46 @@ public class CauseArea extends AbstractModification {
    * @param in   open input Scanner
    */
   public CauseArea(Connection conn, Scanner in) {
-    super(conn, in);
-  }
-
-  @Override
-  public void run() throws SQLException {
-
-    // print the menu options
-    System.out.println("Pick an action");
-    System.out.println();
-    System.out.println("1. Add Cause Area");
-    System.out.println("2. Change existing Cause Area");
-    System.out.println("3. Delete existing Cause Area");
-    System.out.println();
-
-    // init marker to check if the input is correct
-    boolean inputCorrect = false;
-
-    while (!inputCorrect) {
-      this.printStandardPrompt();
-      // get the user input for this menu
-      String input = this.in.nextLine();
-      System.out.println();
-      // process the input
-      switch (input.toLowerCase()) {
-        case "1":
-          this.add();
-        case "2":
-          this.update();
-        case "3":
-          this.delete();
-        default:
-          // process the standard or incorrect input
-          inputCorrect = this.defaultInputHandler(input, new Home(this.conn),
-              new MainModifications(this.conn,
-                  this.in));
-      }
-    }
+    super(conn, in,
+        "Cause Area",
+        "cause_area",
+        1,
+        "cause_id",
+        new int[]{2});
   }
 
   @Override
   protected void add() throws SQLException {
-
-  }
-
-  protected void update() throws SQLException {
-    String input = this.in.nextLine();
-    // init marker to check if the input is correct
-    boolean inputCorrect = false;
-    switch (input.toLowerCase()) {
-      case "1":
-        this.update();
-      case "2":
-      case "3":
-      default:
-        // process the standard or incorrect input
-        inputCorrect = this.defaultInputHandler(input, new Home(this.conn),
-            new MainModifications(this.conn,
-                this.in));
+    System.out.println("Adding a new a Cause Area.");
+    // defining participating variables
+    String input;
+    PreparedStatement pstmt;
+    String query = "INSERT INTO cause_area (cause_name) value (?)";
+    // getting input and executing a database operation
+    while (true) {
+      // checking that the input is not empty
+      input = this.promptWhileInputEmpty(this.in, "What is the Cause Area name?: ");
+      try {
+        pstmt = conn.prepareStatement(query);
+        pstmt.clearParameters();
+        pstmt.setString(1, input);
+        pstmt.executeUpdate();
+        this.printSuccessMsg();
+        this.printPreviousMenuMsg();
+        break;
+      } catch (SQLException e) {
+        this.printErrorMsg(e);
+      }
     }
   }
 
+  // TODO leave one class Modification
+  // - provide special contrustor args
+  // TODO - provide name of id column + array of cols + special handler function
+  // TODO additionalInputCheck lambda functions as parameters
+  // - (int col) {if (col = 5) execute test }
   @Override
-  protected void delete() throws SQLException {
+  protected void update() throws SQLException {
 
   }
 

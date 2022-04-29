@@ -17,8 +17,7 @@ public class App {
   /**
    * Runs the App starting from the main menu. The program entry point.
    *
-   * @param args
-   * @throws SQLException
+   * @param args standard set of program arguments
    */
   public static void main(String[] args) {
     String userName = System.getenv("USERNAME");
