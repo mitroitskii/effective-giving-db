@@ -1,4 +1,4 @@
-package Menu;
+package View;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -1,4 +1,4 @@
-package Menu;
+package View;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -35,6 +35,13 @@ public abstract class AbstractMenu implements Menu {
   }
 
   /**
+   * Prints a line to separate block of UI on screen.
+   */
+  protected void printSeparatorLine() {
+    System.out.println("–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––");
+  }
+
+  /**
    * Prints the error message with the provided SQLException data.
    *
    * @param e SQLException
@@ -42,7 +49,7 @@ public abstract class AbstractMenu implements Menu {
   protected void printErrorMsg(SQLException e) {
     System.out.println();
     System.out.print("❌ Error executing this command with the database: ");
-    System.out.print(e.getMessage() + e.getSQLState() + e.getErrorCode());
+    System.out.println(e.getMessage() + " " + e.getSQLState() + " " + e.getErrorCode());
     System.out.println();
   }
 
@@ -60,6 +67,7 @@ public abstract class AbstractMenu implements Menu {
    * Prints the message of going back to the previous menu.
    */
   protected void printPreviousMenuMsg() {
+    System.out.println();
     System.out.println("⏮ Going back to the previous menu");
     System.out.println();
   }

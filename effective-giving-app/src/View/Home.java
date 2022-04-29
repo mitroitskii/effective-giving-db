@@ -1,6 +1,6 @@
-package Menu;
+package View;
 
-import Menu.Admin.MainAdmin;
+import View.Admin.MainAdmin;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -36,6 +36,8 @@ public class Home extends AbstractMenu {
     // repeat this menu prompt until the input is recognized
     while (!inputCorrect) {
       // print the menu options
+      this.printSeparatorLine();
+      System.out.println();
       System.out.println("👋 Welcome to the Effective Giving Community!");
       System.out.println();
       System.out.println("Are you a new donor, a returning donor, or an admin?");

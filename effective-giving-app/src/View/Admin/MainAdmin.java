@@ -1,9 +1,9 @@
-package Menu.Admin;
+package View.Admin;
 
-import Menu.AbstractMenu;
-import Menu.Admin.Modifications.MainModifications;
-import Menu.Home;
-import Menu.Menu;
+import View.AbstractMenu;
+import View.Admin.Modifications.MainModifications;
+import View.Home;
+import View.Menu;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -32,6 +32,8 @@ public class MainAdmin extends AbstractMenu {
     // repeat this menu prompt until the input is recognized
     while (!inputCorrect) {
       // print the menu options
+      this.printSeparatorLine();
+      System.out.println();
       System.out.println("Hello Admin!");
       System.out.println("📊 Do you want to see the statistics on the data in the system or make "
           + "changes in the data?");

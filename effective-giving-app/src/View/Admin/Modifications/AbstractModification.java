@@ -1,7 +1,7 @@
-package Menu.Admin.Modifications;
+package View.Admin.Modifications;
 
-import Menu.AbstractMenu;
-import Menu.Home;
+import View.AbstractMenu;
+import View.Home;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -57,6 +57,7 @@ public abstract class AbstractModification extends AbstractMenu {
     // repeat this menu prompt until the input is recognized
     while (!inputCorrect) {
       // print the menu options
+      this.printSeparatorLine();
       System.out.println();
       System.out.println("1. Add " + this.entityName);
       System.out.println("2. Change existing " + this.entityName);
@@ -75,6 +76,7 @@ public abstract class AbstractModification extends AbstractMenu {
           continue;
         case "2":
           this.update();
+          continue;
         case "3":
           this.delete();
           continue;
@@ -97,13 +99,57 @@ public abstract class AbstractModification extends AbstractMenu {
   }
 
   /**
+   * Prints the current value of field.
+   *
+   * @param fieldName the name of the field
+   * @param curVal    current value of the field
+   */
+  protected void printCurrentValue(String fieldName, String curVal) {
+    System.out.println(
+        "⚫️ The current " + fieldName + " of this " + this.entityName + " is \"" + curVal + "\"");
+  }
+
+  /**
+   * Prompts for the new value of the given field.
+   *
+   * @param in        open input scanner
+   * @param fieldName the name of the field
+   */
+  protected String promptUpdateWhileEmpty(Scanner in, String fieldName) {
+    return this.promptWhileInputEmpty(in,
+        "❓ What is the new " + fieldName + " of the " + this.entityName +
+            "?: ");
+  }
+
+
+  /**
+   * Prompts for the new value of the given field.
+   *
+   * @param in        open input scanner
+   * @param fieldName the name of the field
+   */
+  protected String promptAddWhileEmpty(Scanner in, String fieldName) {
+    return this.promptWhileInputEmpty(in,
+        "❓ What is the " + fieldName + " of the " + this.entityName +
+            "?: ");
+  }
+
+  // TODO CREATE A METHOD TO RUN DUPLICATE CHECK IN A LOOP UNTIL RETURN ** STRING **
+  // if ()
+  // String name = promptWhileDuplicate(this.in, this.promptUpdateWhileEmpty(this.in,
+  // "name", oldName)
+  //      -- check that oldName != name, only after that call dupcheck procedure
+  // ,,
+  //                ⚠️ FUNCTION NAME FOR THE QUERY))
+
+  /**
    * Prompts the user to provide input and checks that the input is not empty.
    *
    * @param in     the input scanner
    * @param prompt text, asking for the user input
    * @return non-empty input string
    */
-  protected String promptWhileInputEmpty(Scanner in, String prompt) {
+  private String promptWhileInputEmpty(Scanner in, String prompt) {
     System.out.println();
     System.out.print(prompt);
     String input = in.nextLine();
@@ -129,17 +175,15 @@ public abstract class AbstractModification extends AbstractMenu {
   }
 
   /**
-   * Prints a table of values, fetched from the database by the given query, and prompts user to
-   * choose one of the rows. Returns the value the user have chosen or -1 if there was an error
-   * reading the table.
+   * Prints a table of all values of this entity and prompts user to choose one of the rows. Returns
+   * the value the user have chosen or -1 if there was an error reading the table.
    *
    * @param idCol number of the column, where the entity's id is stored
    * @param cols  an array of numbers of columns to print
-   * @param query the query for the table to be fetched
    * @return the string value of the number of the rows chosen
    * @throws SQLException if there is an error when running standard menu commands
    */
-  protected String promptTable(int idCol, int[] cols, String query) throws SQLException {
+  protected String promptTable(int idCol, int[] cols) throws SQLException {
 // we store the width of each row
     HashMap<Integer, Integer> colWidths = new HashMap<>();
     // we store the id of each row
@@ -150,6 +194,7 @@ public abstract class AbstractModification extends AbstractMenu {
 
     // initialize a result set
     ResultSet rs;
+    String query = "SELECT * FROM " + this.tableName;
 
     try {
       PreparedStatement pstmt = conn.prepareStatement(query);
@@ -193,15 +238,16 @@ public abstract class AbstractModification extends AbstractMenu {
 
     while (true) {
 
-      // print prompt for the table
-      System.out.println("These are the " + this.entityName + "s available:");
+      // line separator
+      this.printSeparatorLine();
       System.out.println();
+
+      // print header
 
       // create a space for the row numeration
       // print as many spaces as there are digits in the largest numeration number
       int spaces = ("" + rows.size()).length() + 2;
       System.out.format("%" + spaces + "s", " ");
-      // print header
       System.out.print("|");
       for (Integer col : cols) {
         System.out.format(
@@ -229,9 +275,12 @@ public abstract class AbstractModification extends AbstractMenu {
               rows.get(i).get(col)
           );
         }
-        // add newline
+        // add newline to put row item onto the new line
         System.out.println();
       }
+
+      // add newline
+      System.out.println();
 
       // print standard prompt to choose the option
       this.printStandardPrompt();
@@ -262,16 +311,12 @@ public abstract class AbstractModification extends AbstractMenu {
       // if there is row with the given number, we output an error and continue the loop
       catch (IndexOutOfBoundsException e) {
         System.out.println("❌ There is no row with the given number! Try again.");
+        System.out.println();
       }
     }
 
     return id;
   }
-
-  // ‼️‼️‼️ TODO add additionaInputCheck
-  // - implement for each class that needs additional input check
-
-  // TODO abstract these methods away into three separate classes extending class modification???
 
   /**
    * Adds new entity of this type to the database.
@@ -291,20 +336,27 @@ public abstract class AbstractModification extends AbstractMenu {
     // loop until the item is correctly deleted
     while (true) {
 
+      System.out.println("Pick the item to delete:");
+      System.out.println();
+
       // print the table of values and get the id of the value to delete
-      String query = "SELECT * FROM " + this.tableName;
-      String id = this.promptTable(this.idColNum, this.colsToPrint, query);
-      String input;
+      String id = this.promptTable(this.idColNum, this.colsToPrint);
 
       // define participating variables
       PreparedStatement pstmt;
-      query = "DELETE FROM cause_area WHERE " + this.idColName + " = " + id;
+      String query = "DELETE FROM " + this.tableName + " WHERE " + this.idColName + " = ?";
 
       try {
+
+        // set up delete query
         pstmt = conn.prepareStatement(query);
         pstmt.clearParameters();
         pstmt.setString(1, id);
+
+        // run the update
         pstmt.executeUpdate();
+
+        // success
         this.printSuccessMsg();
         this.printPreviousMenuMsg();
         break;

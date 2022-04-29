@@ -1,9 +1,9 @@
-package Menu.Admin.Modifications;
+package View.Admin.Modifications;
 
-import Menu.AbstractMenu;
-import Menu.Admin.MainAdmin;
-import Menu.Home;
-import Menu.Menu;
+import View.AbstractMenu;
+import View.Admin.MainAdmin;
+import View.Home;
+import View.Menu;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -32,6 +32,8 @@ public class MainModifications extends AbstractMenu {
     // repeat this menu prompt until the input is recognized
     while (!inputCorrect) {
       // print the menu options
+      this.printSeparatorLine();
+      System.out.println();
       System.out.println("What changes do you want to make?");
       System.out.println();
       System.out.println("1. Modify Cause Areas");
