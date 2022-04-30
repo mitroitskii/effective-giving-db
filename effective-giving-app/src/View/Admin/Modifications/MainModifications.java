@@ -60,7 +60,11 @@ public class MainModifications extends AbstractMenu {
           Menu problem = new Problem(this.conn, this.in);
           problem.run();
         case "3":
+          Menu intervention = new Intervention(this.conn, this.in);
+          intervention.run();
         case "4":
+          Menu charity = new Charity(this.conn, this.in);
+          charity.run();
         case "5":
         case "6":
         case "7":

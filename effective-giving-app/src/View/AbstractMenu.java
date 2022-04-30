@@ -30,7 +30,7 @@ public abstract class AbstractMenu implements Menu {
   protected void printStandardPrompt() {
     System.out.print("Choose the option and type in its number, type in \"Home\" to go to the "
         + "main menu "
-        + "\"Back\" to go back to the previous menu"
+        + "\"Back\" to go back to the previous menu "
         + "or \"Quit\" to quit the app: ");
   }
 

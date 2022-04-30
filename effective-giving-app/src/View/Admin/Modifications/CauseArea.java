@@ -1,5 +1,6 @@
 package View.Admin.Modifications;
 
+import View.AbstractModification;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -83,7 +84,7 @@ public class CauseArea extends AbstractModification {
         // position cursor to the first row
         rs.next();
 
-        // set up update query
+        // set up update queryw
         query = "UPDATE cause_area SET cause_name = ? WHERE cause_id = ?";
         pstmt = conn.prepareStatement(query);
         pstmt.clearParameters();

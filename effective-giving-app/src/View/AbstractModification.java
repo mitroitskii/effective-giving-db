@@ -1,7 +1,6 @@
-package View.Admin.Modifications;
+package View;
 
-import View.AbstractMenu;
-import View.Home;
+import View.Admin.Modifications.MainModifications;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -99,21 +98,25 @@ public abstract class AbstractModification extends AbstractMenu {
   }
 
   /**
-   * Prints the current value of field.
+   * Prints the current value of field. If the value is null, prints "empty".
    *
    * @param fieldName the name of the field
    * @param curVal    current value of the field
    */
   protected void printCurrentValue(String fieldName, String curVal) {
     System.out.println(
-        "⚫️ The current " + fieldName + " of this " + this.entityName + " is \"" + curVal + "\"");
+        "⚫️ The current " + fieldName + " of this " + this.entityName + " is \"" +
+            // if the value is null, print "empty"
+            (Objects.isNull(curVal) ? "empty" : curVal)
+            + "\"");
   }
 
   /**
-   * Prompts for the new value of the given field.
+   * Prompts for the updated value of the given field until given non-empty input.
    *
    * @param in        open input scanner
    * @param fieldName the name of the field
+   * @return the value of the input
    */
   protected String promptUpdateWhileEmpty(Scanner in, String fieldName) {
     return this.promptWhileInputEmpty(in,
@@ -121,17 +124,47 @@ public abstract class AbstractModification extends AbstractMenu {
             "?: ");
   }
 
-
   /**
-   * Prompts for the new value of the given field.
+   * Prompts for the updated value of the given field.
    *
    * @param in        open input scanner
    * @param fieldName the name of the field
+   * @return the value of the input
+   */
+  protected String promptUpdate(Scanner in, String fieldName) {
+    String prompt = "❓ What is the new " + fieldName + " of the " + this.entityName +
+        "?: ";
+    System.out.println();
+    System.out.print(prompt);
+    return in.nextLine();
+  }
+
+  /**
+   * Prompts for the value of the given field until given non-empty input.
+   *
+   * @param in        open input scanner
+   * @param fieldName the name of the field
+   * @return the value of the input
    */
   protected String promptAddWhileEmpty(Scanner in, String fieldName) {
     return this.promptWhileInputEmpty(in,
         "❓ What is the " + fieldName + " of the " + this.entityName +
             "?: ");
+  }
+
+  /**
+   * Prompts for the value of the given field.
+   *
+   * @param in        open input scanner
+   * @param fieldName the name of the field
+   * @return the value of the input
+   */
+  protected String promptAdd(Scanner in, String fieldName) {
+    String prompt = "❓ What is the " + fieldName + " of the " + this.entityName +
+        "?: ";
+    System.out.println();
+    System.out.print(prompt);
+    return in.nextLine();
   }
 
   // TODO CREATE A METHOD TO RUN DUPLICATE CHECK IN A LOOP UNTIL RETURN ** STRING **
@@ -161,17 +194,6 @@ public abstract class AbstractModification extends AbstractMenu {
       input = in.nextLine();
     }
     return input;
-  }
-
-
-  /**
-   * Prints a delete prompt.
-   */
-  protected void deletePrompt() {
-    System.out.println();
-    System.out.println("Are you sure you want to delete this item?");
-    System.out.println();
-    System.out.println("1. Yes");
   }
 
   /**
@@ -216,14 +238,15 @@ public abstract class AbstractModification extends AbstractMenu {
           String val = rs.getString(col);
           // if the cell is null, we store the string "empty" as its value
           row.put(col, Objects.isNull(val) ? "empty" : val);
+          // fetching the length of the string in the current cell
+          int valLength = Objects.isNull(val) ? 5 : val.length();
           // replacing a column width value with the length of the current cell
           // if it's larger than the old value or the width of the header
           colWidths.put(col,
-              colWidths.getOrDefault(col, rs.getMetaData().getColumnName(col).length())
-                  > val.length()
-                  ?
+              colWidths.getOrDefault(col,
+                  rs.getMetaData().getColumnName(col).length()) > valLength ?
                   colWidths.getOrDefault(col, rs.getMetaData().getColumnName(col).length())
-                  : val.length());
+                  : valLength);
         }
         // add row to the list of rows
         rows.add(row);
@@ -322,6 +345,26 @@ public abstract class AbstractModification extends AbstractMenu {
   }
 
   /**
+   * Set the value of the parameter of the prepared statement to a provided string. If the string is
+   * empty, sets the value to null.
+   *
+   * @param pstmt          prepared statement
+   * @param paremeterIndex index of the parameter to set
+   * @param value          value to set
+   * @param SQLType        the SQL type code defined in java.sql.Types
+   * @throws SQLException if there is an error with the database
+   */
+  protected void setStringOrNull(PreparedStatement pstmt, int paremeterIndex, String value,
+      int SQLType)
+      throws SQLException {
+    if (value.isEmpty()) {
+      pstmt.setNull(paremeterIndex, SQLType);
+    } else {
+      pstmt.setString(paremeterIndex, value);
+    }
+  }
+
+  /**
    * Adds new entity of this type to the database.
    */
   protected abstract void add() throws SQLException;
@@ -356,7 +399,7 @@ public abstract class AbstractModification extends AbstractMenu {
         pstmt.clearParameters();
         pstmt.setString(1, id);
 
-        // run the update
+        // run the delete query
         pstmt.executeUpdate();
 
         // success
