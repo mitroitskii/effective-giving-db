@@ -57,6 +57,8 @@ public class MainModifications extends AbstractMenu {
           Menu cause = new CauseArea(this.conn, this.in);
           cause.run();
         case "2":
+          Menu problem = new Problem(this.conn, this.in);
+          problem.run();
         case "3":
         case "4":
         case "5":

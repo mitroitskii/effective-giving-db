@@ -7,41 +7,45 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 /**
- * Represents the Cause Area modification menu for the admin.
+ * Represents the Problem modification menu for the admin.
  */
-public class CauseArea extends AbstractModification {
+public class Problem extends AbstractModification {
 
   /**
-   * Creates an instance Cause Area modification menu.
+   * Creates an instance of Problem modification menu.
    *
    * @param conn open SQL database connection
    * @param in   open input Scanner
    */
-  public CauseArea(Connection conn, Scanner in) {
+  public Problem(Connection conn, Scanner in) {
     super(conn, in,
-        "Cause Area",
-        "cause_area",
+        "Problem",
+        "problem",
         1,
-        "cause_id",
-        new int[]{2});
+        "problem_id",
+        new int[]{2, 3});
   }
 
   @Override
   protected void add() throws SQLException {
     System.out.println("Adding a new " + this.entityName + ".");
     // defining participating variables
-    String name;
+    String name, causeID;
     PreparedStatement pstmt;
-    String query = "INSERT INTO cause_area (cause_name) value (?)";
+    String query = "INSERT INTO problem (problem_name, cause) value (?, ?)";
     // getting input and executing a database operation
     while (true) {
       // checking that the input is not empty
       name = this.promptAddWhileEmpty(this.in, "name");
       // TODO MYSQL DUPLICATE CHECK
+      System.out.println();
+      System.out.println("❓ What is the cause area of this problem?");
+      causeID = this.promptTable("cause_area", 1, new int[]{2});
       try {
         pstmt = conn.prepareStatement(query);
         pstmt.clearParameters();
         pstmt.setString(1, name);
+        pstmt.setString(2, causeID);
         pstmt.executeUpdate();
         this.printSuccessMsg();
         this.printPreviousMenuMsg();
@@ -52,7 +56,6 @@ public class CauseArea extends AbstractModification {
       }
     }
   }
-
 
   @Override
   protected void update() throws SQLException {
@@ -70,7 +73,7 @@ public class CauseArea extends AbstractModification {
       PreparedStatement pstmt;
 
       // query to get the current values of the chosen row
-      String query = "SELECT * FROM cause_area WHERE cause_id = ?";
+      String query = "SELECT * FROM problem WHERE problem_id = ?";
       ResultSet rs;
 
       try {
@@ -84,7 +87,7 @@ public class CauseArea extends AbstractModification {
         rs.next();
 
         // set up update query
-        query = "UPDATE cause_area SET cause_name = ? WHERE cause_id = ?";
+        query = "UPDATE problem SET problem_name = ?, cause = ? WHERE problem_id = ?";
         pstmt = conn.prepareStatement(query);
         pstmt.clearParameters();
 
@@ -95,8 +98,18 @@ public class CauseArea extends AbstractModification {
         String name = this.promptUpdateWhileEmpty(this.in, "name");
         pstmt.setString(1, name);
 
+        // get new cause area
+        String curCauseID = rs.getString(2);
+        // TODO get cause name of the cause with this id (use procedure)
+        // FIXME print cause name instead of cause id here
+        this.printCurrentValue("cause area", curCauseID);
+        // TODO MYSQL DUPLICATE CHECK
+        System.out.println("❓ What is the new cause area of this problem?");
+        String causeID = this.promptTable("cause_area", 1, new int[]{2});
+        pstmt.setString(2, causeID);
+
         // set the id value for the row in the query
-        pstmt.setString(2, id);
+        pstmt.setString(3, id);
 
         // run the update
         pstmt.executeUpdate();
@@ -110,7 +123,6 @@ public class CauseArea extends AbstractModification {
         this.printErrorMsg(e);
       }
     }
-
   }
 
 }

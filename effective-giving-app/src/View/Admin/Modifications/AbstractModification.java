@@ -178,12 +178,15 @@ public abstract class AbstractModification extends AbstractMenu {
    * Prints a table of all values of this entity and prompts user to choose one of the rows. Returns
    * the value the user have chosen or -1 if there was an error reading the table.
    *
-   * @param idCol number of the column, where the entity's id is stored
-   * @param cols  an array of numbers of columns to print
+   * @param tableName the name of the table to print
+   * @param idCol     number of the column, where the entity's id is stored
+   * @param cols      an array of numbers of columns to print
    * @return the string value of the number of the rows chosen
    * @throws SQLException if there is an error when running standard menu commands
    */
-  protected String promptTable(int idCol, int[] cols) throws SQLException {
+  // TODO switch table name into procedure name to query resuts !!!
+  // - use Ayeshas fetch procedures
+  protected String promptTable(String tableName, int idCol, int[] cols) throws SQLException {
 // we store the width of each row
     HashMap<Integer, Integer> colWidths = new HashMap<>();
     // we store the id of each row
@@ -194,7 +197,7 @@ public abstract class AbstractModification extends AbstractMenu {
 
     // initialize a result set
     ResultSet rs;
-    String query = "SELECT * FROM " + this.tableName;
+    String query = "SELECT * FROM " + tableName;
 
     try {
       PreparedStatement pstmt = conn.prepareStatement(query);
@@ -340,7 +343,7 @@ public abstract class AbstractModification extends AbstractMenu {
       System.out.println();
 
       // print the table of values and get the id of the value to delete
-      String id = this.promptTable(this.idColNum, this.colsToPrint);
+      String id = this.promptTable(this.tableName, this.idColNum, this.colsToPrint);
 
       // define participating variables
       PreparedStatement pstmt;
