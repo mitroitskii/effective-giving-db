@@ -143,12 +143,11 @@ public class Intervention extends AbstractModification {
         }
         this.setStringOrNull(pstmt, 2, qaly, Types.DECIMAL);
 
-        // get new cause area
+        // get new problem id
         String curProblemID = rs.getString(3);
         // TODO get problem name of the cause with this id (use procedure)
         // FIXME print problem name instead of id here
         this.printCurrentValue("problem", curProblemID);
-        // TODO MYSQL DUPLICATE CHECK
         System.out.println("❓ What is the new problem that this intervention addresses?");
         String problemID = this.promptTable("problem", 1, new int[]{2, 3});
         pstmt.setString(3, problemID);

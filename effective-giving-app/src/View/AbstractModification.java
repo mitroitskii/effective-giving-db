@@ -104,6 +104,7 @@ public abstract class AbstractModification extends AbstractMenu {
    * @param curVal    current value of the field
    */
   protected void printCurrentValue(String fieldName, String curVal) {
+    System.out.println();
     System.out.println(
         "⚫️ The current " + fieldName + " of this " + this.entityName + " is \"" +
             // if the value is null, print "empty"
@@ -147,6 +148,7 @@ public abstract class AbstractModification extends AbstractMenu {
    * @return the value of the input
    */
   protected String promptAddWhileEmpty(Scanner in, String fieldName) {
+    System.out.println();
     return this.promptWhileInputEmpty(in,
         "❓ What is the " + fieldName + " of the " + this.entityName +
             "?: ");
@@ -160,6 +162,7 @@ public abstract class AbstractModification extends AbstractMenu {
    * @return the value of the input
    */
   protected String promptAdd(Scanner in, String fieldName) {
+    System.out.println();
     String prompt = "❓ What is the " + fieldName + " of the " + this.entityName +
         "?: ";
     System.out.println();
@@ -183,7 +186,6 @@ public abstract class AbstractModification extends AbstractMenu {
    * @return non-empty input string
    */
   private String promptWhileInputEmpty(Scanner in, String prompt) {
-    System.out.println();
     System.out.print(prompt);
     String input = in.nextLine();
     while (input.isEmpty()) {

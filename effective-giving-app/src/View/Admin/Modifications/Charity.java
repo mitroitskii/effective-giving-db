@@ -171,34 +171,47 @@ public class Charity extends AbstractModification {
         pstmt.clearParameters();
 
         // get new name
-        // current name for intervention is the id
-        this.printCurrentValue("name", id);
+        String curName = rs.getString(2);
+        this.printCurrentValue("name", curName);
         // TODO MYSQL DUPLICATE CHECK
         String name = this.promptUpdateWhileEmpty(this.in, "name");
         pstmt.setString(1, name);
 
-        // get new qaly
-        String curQaly = rs.getString(2);
-        this.printCurrentValue("QALY", curQaly);
-        String qaly = this.promptUpdate(this.in, "QALY");
-        // check that the qaly value is in proper format
-//        while (!qaly.isEmpty() && !this.checkQALY(qaly)) {
-//          qaly = this.promptUpdate(this.in, "QALY");
-//        }
-        this.setStringOrNull(pstmt, 2, qaly, Types.DECIMAL);
+        // get new website
+        String curWeb = rs.getString(3);
+        this.printCurrentValue("website", curWeb);
+        String web = this.promptUpdateWhileEmpty(this.in, "website");
+        pstmt.setString(2, web);
+
+        // get new description
+        String curDesc = rs.getString(4);
+        this.printCurrentValue("description", curDesc);
+        String desc = this.promptUpdateWhileEmpty(this.in, "description");
+        pstmt.setString(3, desc);
+
+        // get new type
+        String curType = rs.getString(5);
+        this.printCurrentValue("type", curType);
+        String type = this.promptCharityType();
+        pstmt.setString(4, type);
 
         // get new cause area
-        String curProblemID = rs.getString(3);
-        // TODO get problem name of the cause with this id (use procedure)
-        // FIXME print problem name instead of id here
-        this.printCurrentValue("problem", curProblemID);
-        // TODO MYSQL DUPLICATE CHECK
-        System.out.println("❓ What is the new problem that this intervention addresses?");
-        String problemID = this.promptTable("problem", 1, new int[]{2, 3});
-        pstmt.setString(3, problemID);
+        String curCauseID = rs.getString(6);
+        // TODO get cause area name of the cause with this id (use procedure)
+        // FIXME print cause area name instead of id here
+        this.printCurrentValue("cause area", curCauseID);
+        System.out.println("❓ Which cause area does this charity work in?");
+        String causeID = this.promptTable("cause_area", 1, new int[]{2});
+        pstmt.setString(5, causeID);
+
+        // get new link
+        String curLink = rs.getString(7);
+        this.printCurrentValue("direct donation link", curLink);
+        String link = this.promptUpdate(this.in, "direct donation link");
+        this.setStringOrNull(pstmt, 6, link, Types.VARCHAR);
 
         // set the id value for the row in the query
-        pstmt.setString(4, id);
+        pstmt.setString(7, id);
 
         // run the update
         pstmt.executeUpdate();
