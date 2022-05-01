@@ -184,7 +184,7 @@ public abstract class AbstractModification extends AbstractMenu {
    * @param prompt text, asking for the user input
    * @return non-empty input string
    */
-  private String promptWhileInputEmpty(Scanner in, String prompt) {
+  protected String promptWhileInputEmpty(Scanner in, String prompt) {
     System.out.print(prompt);
     String input = in.nextLine();
     while (input.isEmpty()) {

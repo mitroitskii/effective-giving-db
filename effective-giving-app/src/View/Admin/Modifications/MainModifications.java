@@ -41,9 +41,6 @@ public class MainModifications extends AbstractMenu {
       System.out.println("3. Modify Interventions");
       System.out.println("4. Modify Charities");
       System.out.println("5. Modify Projects");
-      System.out.println("6. Modify Evaluators");
-      System.out.println("7. Modify Evaluations");
-      System.out.println("8. Modify New Donor Sources");
       System.out.println();
       this.printStandardPrompt();
 
@@ -68,9 +65,6 @@ public class MainModifications extends AbstractMenu {
         case "5":
           Menu project = new Project(this.conn, this.in);
           project.run();
-        case "6":
-        case "7":
-        case "8":
         default:
           // process the standard or incorrect input
           inputCorrect = this.checkStandardInputOptions(input, new Home(this.conn),

@@ -209,7 +209,8 @@ public class Project extends AbstractModification {
         // TODO get cause area name of the cause with this id (use procedure)
         // FIXME print cause area name instead of id here
         this.printCurrentValue("intervention", curInterventionID);
-        String interventionID = this.promptTable("intervention", 1, new int[]{1, 2, 3});
+        String interventionID = this.promptTable("intervention",
+            1, new int[]{1, 2, 3});
         pstmt.setString(2, interventionID);
 
         // get new charity
@@ -217,7 +218,8 @@ public class Project extends AbstractModification {
         // TODO get cause area name of the cause with this id (use procedure)
         // FIXME print cause area name instead of id here
         this.printCurrentValue("charity", curCharityID);
-        String charityID = this.promptTable("charity", 1, new int[]{2, 3, 5, 6, 7});
+        String charityID = this.promptTable("charity",
+            1, new int[]{2, 3, 5, 6, 7});
         pstmt.setString(3, charityID);
 
         // get new year

@@ -55,7 +55,12 @@ public class Home extends AbstractMenu {
       // process the input
       switch (input.toLowerCase()) {
         case "1":
+          Menu newDonor = new NewDonor(this.conn, in);
+          newDonor.run();
+          // we immediately transition to log in screen
         case "2":
+          Menu oldDolor = new OldDonor(this.conn, in);
+          oldDolor.run();
         case "3":
           Menu admin = new MainAdmin(this.conn, in);
           admin.run();
