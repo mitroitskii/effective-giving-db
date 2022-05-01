@@ -263,12 +263,12 @@ public abstract class AbstractModification extends AbstractMenu {
       this.printSeparatorLine();
       System.out.println();
 
-      // print header
-
       // create a space for the row numeration
       // print as many spaces as there are digits in the largest numeration number
       int spaces = ("" + rows.size()).length() + 2;
-      System.out.format("%" + spaces + "s", " ");
+
+      // print header
+      System.out.format("%-" + spaces + "s", " ");
       System.out.print("|");
       for (Integer col : cols) {
         System.out.format(

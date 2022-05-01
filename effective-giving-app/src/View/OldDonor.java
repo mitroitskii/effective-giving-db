@@ -29,8 +29,6 @@ public class OldDonor extends AbstractModification {
         new int[]{2, 3, 4, 5, 6, 7});
   }
 
-  // TODO method to check donor existence
-
   /*
   Helper method to check the existence of the donor
    */
@@ -56,18 +54,18 @@ public class OldDonor extends AbstractModification {
         pstmt.setString(1, email);
         rs = pstmt.executeQuery();
         // move cursor to the first line
-        rs.next();
 
-        System.out.println();
-        System.out.println("✌️ Hello, " + rs.getString(2)
-            + " " + rs.getString(3));
-        this.donorEmail = rs.getString(4);
+        if (rs.next()) {
+          System.out.println();
+          System.out.println("✌️ Hello, " + rs.getString(2)
+              + " " + rs.getString(3));
+          this.donorEmail = rs.getString(4);
 
-        // TODO check user existence;
-        // get email from donor class getID method??
-
-        // return from the function on success
-        return;
+          // return from the function on success
+          return;
+        } else {
+          System.out.println("❌ Donor with that email not found!");
+        }
       } catch (SQLException e) {
         this.printErrorMsg(e);
       }

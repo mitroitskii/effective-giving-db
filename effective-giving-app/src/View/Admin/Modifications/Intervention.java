@@ -33,7 +33,7 @@ public class Intervention extends AbstractModification {
    * Helper method to check that the qaly is in the proper format.
    */
   private boolean checkQALY(String input) {
-    if (input.matches("\\d{1,2}.\\d\\d")) {
+    if (input.matches("\\d{1,2}(\\.\\d{1,2}){0,1}")) {
       return true;
     } else {
       System.out.println();
@@ -129,7 +129,6 @@ public class Intervention extends AbstractModification {
         // get new name
         // current name for intervention is the id
         this.printCurrentValue("name", id);
-        // TODO MYSQL DUPLICATE CHECK
         String name = this.promptUpdateWhileEmpty(this.in, "name");
         pstmt.setString(1, name);
 

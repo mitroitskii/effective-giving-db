@@ -107,15 +107,13 @@ public class Donation extends AbstractModification {
 
       try {
 
-        // getting the evaluator
+        // get the evaluator
         System.out.println("Pick the evaluator to get its rating of charities:");
         System.out.println();
         evaluatorID = this.promptTable("getEvaluators()", 1, new int[]{2, 3});
 
         System.out.println("Pick the charity to donate to:");
         System.out.println();
-        // TODO (procedure) get id of charity from the list of charities evaluated by the evaluator
-        // charityID =
         String query = "getLastEvaluatedCharities(" + evaluatorID + ")";
         charityID = this.promptTable(query, 1, new int[]{2, 3, 4, 5});
 
@@ -132,39 +130,38 @@ public class Donation extends AbstractModification {
   /*
  Helper method to get a list of charities filtered by cause area.
   */
-//  private void byCause() {
-//
-//    // define participating variables
-//    String causeID, problemID, intervention;
-//    // define participating variables
-//    String evaluatorID, charityID;
-//
-//    while (true) {
-//
-//      this.printSeparatorLine();
-//      System.out.println();
-//
-//      try {
-//
-//        // getting the evaluator
-//        System.out.println("Pick the evaluator to get its rating of charities:");
-//        System.out.println();
-//        // FIXME fix for the query instead of a table call
-//        evaluatorID = this.promptTable("evaluator", 1, new int[]{2, 3});
-//
-//        System.out.println("Pick the charity to donate to:");
-//        System.out.println();
-//        // TODO (procedure) get id of charity from the list of charities evaluated by the evaluator
-//        // charityID =
-//
-//        this.donate(charityID);
-//
-//      } catch (SQLException e) {
-//        this.printErrorMsg(e);
-//      }
-//    }
-//
-//  }
+  private void byCause() {
+
+    // define participating variables
+    String causeID, charityID;
+
+    while (true) {
+
+      this.printSeparatorLine();
+      System.out.println();
+
+      try {
+
+        // get the cause
+        System.out.println("Pick the cause area the charity works in:");
+        System.out.println();
+        causeID = this.promptTable("getCauseAreas()", 1, new int[]{2});
+
+        // get the charity
+        System.out.println("Pick the charity to donate to:");
+        System.out.println();
+        String procedure = "getCharitiesFromCause(" + causeID + ")";
+        charityID = this.promptTable(procedure, 1, new int[]{2, 3, 4});
+
+        this.donate(charityID);
+        return;
+
+      } catch (SQLException e) {
+        this.printErrorMsg(e);
+      }
+    }
+
+  }
 
   @Override
   public void run() throws SQLException {
@@ -182,9 +179,9 @@ public class Donation extends AbstractModification {
       System.out.println();
       System.out.println(
           "1. By evaluator – get a list of top-rated charities, chosen by the specific evaluator");
+      System.out.println(
+          "2. By cause area – get a list of charities, working in a specific cause area");
       System.out.println();
-//      System.out.println(
-//          "2. By cause area – get a list of charities, working in a specific cause area");
       this.printStandardPrompt();
 
       // get the user input for this menu
@@ -196,9 +193,9 @@ public class Donation extends AbstractModification {
         case "1":
           this.byEvaluator();
           continue;
-//        case "2":
-//          this.byCause();
-//          continue;
+        case "2":
+          this.byCause();
+          continue;
         default:
           // process the standard or incorrect input
           inputCorrect = this.checkStandardInputOptions(input, new Home(this.conn), this);

@@ -173,7 +173,6 @@ public class Charity extends AbstractModification {
         // get new name
         String curName = rs.getString(2);
         this.printCurrentValue("name", curName);
-        // TODO MYSQL DUPLICATE CHECK
         String name = this.promptUpdateWhileEmpty(this.in, "name");
         pstmt.setString(1, name);
 

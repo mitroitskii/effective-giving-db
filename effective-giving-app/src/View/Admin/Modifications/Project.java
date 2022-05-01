@@ -110,15 +110,14 @@ public class Project extends AbstractModification {
     PreparedStatement pstmt;
 
     // set up a query
-    String query = "INSERT INTO project (project_name, intervention, charity, year_init, "
-        + "project_status) value (?, ?, ?, ?, ?)";
+    //
+    String query = "CALL addProject(?, ?, ?, ?, ?)";
 
     // get input and execute a database operation
     while (true) {
 
       // get name
       name = this.promptAddWhileEmpty(this.in, "name");
-      // TODO MYSQL DUPLICATE CHECK
 
       // get a table of interventions
       System.out.println("❓ Which intervention does this project implement?");
@@ -127,8 +126,6 @@ public class Project extends AbstractModification {
       // get a table of charities
       System.out.println("❓ Which charity implements this project?");
       charityID = this.promptTable("getCharities()", 1, new int[]{2, 3, 4, 5, 6});
-
-      // TODO ‼️‼️‼️ Boolean checkCauseAreaMatch(interventionName, charityId)
 
       // get year
       year = this.promptAddWhileEmpty(this.in, "year");
@@ -143,9 +140,9 @@ public class Project extends AbstractModification {
       try {
         pstmt = conn.prepareStatement(query);
         pstmt.clearParameters();
-        pstmt.setString(1, name);
-        pstmt.setString(2, intervention);
-        pstmt.setString(3, charityID);
+        pstmt.setString(3, name);
+        pstmt.setString(1, intervention);
+        pstmt.setString(2, charityID);
         pstmt.setString(4, year);
         pstmt.setString(5, status);
         pstmt.executeUpdate();

@@ -39,7 +39,6 @@ public class CauseArea extends AbstractModification {
     while (true) {
       // checking that the input is not empty
       name = this.promptAddWhileEmpty(this.in, "name");
-      // TODO MYSQL DUPLICATE CHECK
       try {
         pstmt = conn.prepareStatement(query);
         pstmt.clearParameters();

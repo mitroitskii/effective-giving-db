@@ -39,7 +39,6 @@ public class Problem extends AbstractModification {
     while (true) {
       // checking that the input is not empty
       name = this.promptAddWhileEmpty(this.in, "name");
-      // TODO MYSQL DUPLICATE CHECK
       System.out.println();
       System.out.println("❓ What is the cause area of this problem?");
       causeID = this.promptTable("getCauseAreas()", 1, new int[]{2});
@@ -96,7 +95,6 @@ public class Problem extends AbstractModification {
         // get new name
         String curName = rs.getString(2);
         this.printCurrentValue("name", curName);
-        // TODO MYSQL DUPLICATE CHECK
         String name = this.promptUpdateWhileEmpty(this.in, "name");
         pstmt.setString(1, name);
 
@@ -105,7 +103,6 @@ public class Problem extends AbstractModification {
         // TODO get cause name of the cause with this id (use procedure)
         // FIXME print cause name instead of cause id here
         this.printCurrentValue("cause area", curCauseID);
-        // TODO MYSQL DUPLICATE CHECK
         System.out.println("❓ What is the new cause area of this problem?");
         String causeID = this.promptTable("getCauseAreas()", 1, new int[]{2});
         pstmt.setString(2, causeID);
