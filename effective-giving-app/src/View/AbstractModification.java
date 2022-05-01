@@ -162,7 +162,6 @@ public abstract class AbstractModification extends AbstractMenu {
    * @return the value of the input
    */
   protected String promptAdd(Scanner in, String fieldName) {
-    System.out.println();
     String prompt = "❓ What is the " + fieldName + " of the " + this.entityName +
         "?: ";
     System.out.println();

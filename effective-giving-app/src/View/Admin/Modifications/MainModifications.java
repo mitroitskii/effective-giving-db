@@ -66,6 +66,8 @@ public class MainModifications extends AbstractMenu {
           Menu charity = new Charity(this.conn, this.in);
           charity.run();
         case "5":
+          Menu project = new Project(this.conn, this.in);
+          project.run();
         case "6":
         case "7":
         case "8":
