@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+/**
+ * Represents a menu for a returning donor.
+ */
 public class OldDonor extends AbstractModification {
 
   String donorEmail;
@@ -20,6 +23,7 @@ public class OldDonor extends AbstractModification {
     super(conn, in,
         "Donor",
         "donor",
+        "getDonors()",
         1,
         "donor_id",
         new int[]{2, 3, 4, 5, 6, 7});
@@ -54,7 +58,9 @@ public class OldDonor extends AbstractModification {
         // move cursor to the first line
         rs.next();
 
-        System.out.println("✌️ Hello, " + rs.getString(2) + rs.getString(3));
+        System.out.println();
+        System.out.println("✌️ Hello, " + rs.getString(2)
+            + " " + rs.getString(3));
         this.donorEmail = rs.getString(4);
 
         // TODO check user existence;
@@ -71,6 +77,36 @@ public class OldDonor extends AbstractModification {
   @Override
   public void run() throws SQLException {
     this.checkDonor();
+
+    // init marker to check if the input is correct
+    boolean inputCorrect = false;
+
+    // repeat this menu prompt until the input is recognized
+    while (!inputCorrect) {
+
+      // print the menu options
+      System.out.println("❤️ Do you want to make a donation?");
+      System.out.println();
+      System.out.println("1. Make a donation");
+      System.out.println();
+      this.printStandardPrompt();
+
+      // get the user input for this menu
+      String input = in.nextLine();
+      System.out.println();
+
+      // process the input
+      switch (input.toLowerCase()) {
+        case "1":
+          Menu donat = new Donation(this.conn, in, this.donorEmail);
+          donat.run();
+          // we immediately transition to log in screen
+        default:
+          // process the standard or incorrect input
+          inputCorrect = this.checkStandardInputOptions(input, new Home(this.conn), this);
+      }
+    }
+
   }
 
   @Override

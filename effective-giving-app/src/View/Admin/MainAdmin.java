@@ -35,11 +35,11 @@ public class MainAdmin extends AbstractMenu {
       this.printSeparatorLine();
       System.out.println();
       System.out.println("Hello Admin!");
-      System.out.println("📊 Do you want to see the statistics on the data in the system or make "
-          + "changes in the data?");
+//      System.out.println("📊 Do you want to see the statistics on the data in the system or make "
+//          + "changes in the data?");
       System.out.println();
-      System.out.println("1. See the statistics");
-      System.out.println("2. Change or add the data");
+//      System.out.println("1. See the statistics");
+      System.out.println("1. Change or add the data");
       System.out.println();
 
       this.printStandardPrompt();
@@ -50,9 +50,9 @@ public class MainAdmin extends AbstractMenu {
 
       // process the input
       switch (input.toLowerCase()) {
+//        case "1":
+//          inputCorrect = true;
         case "1":
-          inputCorrect = true;
-        case "2":
           inputCorrect = true;
           Menu mods = new MainModifications(conn, in);
           mods.run();

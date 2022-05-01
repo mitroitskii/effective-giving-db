@@ -19,6 +19,8 @@ public abstract class AbstractModification extends AbstractMenu {
   protected String entityName;
   // a name of the table
   protected String tableName;
+  // a procedure name
+  protected String procedure;
   // a name of the table
   protected int idColNum;
   // a name of the table
@@ -33,15 +35,17 @@ public abstract class AbstractModification extends AbstractMenu {
    * @param in          open input Scanner
    * @param entityName  the name of the entity this menu modifies
    * @param tableName   the table name in the database, where these entities are stored
+   * @param procedure   procedure name to get all entities of this type
    * @param idColNum    the number of the column where the id of the entity is
    * @param idColName   the name of the column where the id of the entity is
    * @param colsToPrint the array with the numbers of columns to print as a table
    */
   protected AbstractModification(Connection conn, Scanner in, String entityName, String tableName
-      , int idColNum, String idColName, int[] colsToPrint) {
+      , String procedure, int idColNum, String idColName, int[] colsToPrint) {
     super(conn, in);
     this.entityName = entityName;
     this.tableName = tableName;
+    this.procedure = procedure;
     this.idColNum = idColNum;
     this.idColName = idColName;
     this.colsToPrint = colsToPrint;
@@ -169,14 +173,6 @@ public abstract class AbstractModification extends AbstractMenu {
     return in.nextLine();
   }
 
-  // TODO CREATE A METHOD TO RUN DUPLICATE CHECK IN A LOOP UNTIL RETURN ** STRING **
-  // if ()
-  // String name = promptWhileDuplicate(this.in, this.promptUpdateWhileEmpty(this.in,
-  // "name", oldName)
-  //      -- check that oldName != name, only after that call dupcheck procedure
-  // ,,
-  //                ⚠️ FUNCTION NAME FOR THE QUERY))
-
   /**
    * Prompts the user to provide input and checks that the input is not empty.
    *
@@ -201,15 +197,13 @@ public abstract class AbstractModification extends AbstractMenu {
    * Prints a table of all values of this entity and prompts user to choose one of the rows. Returns
    * the value the user have chosen or -1 if there was an error reading the table.
    *
-   * @param tableName the name of the table to print
+   * @param procedure rocedure name to get all entities of this type
    * @param idCol     number of the column, where the entity's id is stored
    * @param cols      an array of numbers of columns to print
    * @return the string value of the number of the rows chosen
    * @throws SQLException if there is an error when running standard menu commands
    */
-  // TODO switch table name into procedure name to query resuts !!!
-  // - use Ayeshas fetch procedures
-  protected String promptTable(String tableName, int idCol, int[] cols) throws SQLException {
+  protected String promptTable(String procedure, int idCol, int[] cols) throws SQLException {
 // we store the width of each row
     HashMap<Integer, Integer> colWidths = new HashMap<>();
     // we store the id of each row
@@ -220,7 +214,7 @@ public abstract class AbstractModification extends AbstractMenu {
 
     // initialize a result set
     ResultSet rs;
-    String query = "SELECT * FROM " + tableName;
+    String query = "CALL " + procedure;
 
     try {
       PreparedStatement pstmt = conn.prepareStatement(query);
@@ -365,6 +359,16 @@ public abstract class AbstractModification extends AbstractMenu {
     }
   }
 
+  /*
+  Runs a query that returns one value.
+   */
+  protected String runOneValueQuery(String query) throws SQLException {
+    PreparedStatement pstmt = conn.prepareStatement(query);
+    ResultSet rs = pstmt.executeQuery();
+    rs.next();
+    return rs.getString(1);
+  }
+
   /**
    * Adds new entity of this type to the database.
    */
@@ -387,7 +391,7 @@ public abstract class AbstractModification extends AbstractMenu {
       System.out.println();
 
       // print the table of values and get the id of the value to delete
-      String id = this.promptTable(this.tableName, this.idColNum, this.colsToPrint);
+      String id = this.promptTable(this.procedure, this.idColNum, this.colsToPrint);
 
       // define participating variables
       PreparedStatement pstmt;

@@ -23,6 +23,7 @@ public class Intervention extends AbstractModification {
     super(conn, in,
         "Intervention",
         "intervention",
+        "getInterventions()",
         1,
         "Intervention_name",
         new int[]{1, 2, 3});
@@ -60,7 +61,6 @@ public class Intervention extends AbstractModification {
 
       // check that the input is not empty
       name = this.promptAddWhileEmpty(this.in, "name");
-      // TODO MYSQL DUPLICATE CHECK
 
       qaly = this.promptAdd(this.in, "QALY");
       // check that the qaly value is in proper format
@@ -70,7 +70,7 @@ public class Intervention extends AbstractModification {
 
       // get a table of problems
       System.out.println("❓ Which problem does this intervention address?");
-      problemID = this.promptTable("problem", 1, new int[]{2, 3});
+      problemID = this.promptTable("getProblems()", 1, new int[]{2, 3});
 
       try {
         pstmt = conn.prepareStatement(query);
@@ -101,7 +101,7 @@ public class Intervention extends AbstractModification {
       System.out.println();
 
       // print the table of values and get the id of the value to update
-      String id = this.promptTable(this.tableName, this.idColNum, this.colsToPrint);
+      String id = this.promptTable(this.procedure, this.idColNum, this.colsToPrint);
 
       // define participating variables
       PreparedStatement pstmt;
@@ -149,7 +149,7 @@ public class Intervention extends AbstractModification {
         // FIXME print problem name instead of id here
         this.printCurrentValue("problem", curProblemID);
         System.out.println("❓ What is the new problem that this intervention addresses?");
-        String problemID = this.promptTable("problem", 1, new int[]{2, 3});
+        String problemID = this.promptTable("getProblems()", 1, new int[]{2, 3});
         pstmt.setString(3, problemID);
 
         // set the id value for the row in the query

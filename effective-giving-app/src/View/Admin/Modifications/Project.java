@@ -23,6 +23,7 @@ public class Project extends AbstractModification {
     super(conn, in,
         "Project",
         "project",
+        "getProjects()",
         3,
         "project_name",
         new int[]{3, 1, 2, 4, 5});
@@ -121,11 +122,11 @@ public class Project extends AbstractModification {
 
       // get a table of interventions
       System.out.println("❓ Which intervention does this project implement?");
-      intervention = this.promptTable("intervention", 1, new int[]{1, 2, 3});
+      intervention = this.promptTable("getInterventions()", 1, new int[]{1, 2, 3});
 
       // get a table of charities
       System.out.println("❓ Which charity implements this project?");
-      charityID = this.promptTable("charity", 1, new int[]{2, 3, 5, 6, 7});
+      charityID = this.promptTable("getCharities()", 1, new int[]{2, 3, 4, 5, 6});
 
       // TODO ‼️‼️‼️ Boolean checkCauseAreaMatch(interventionName, charityId)
 
@@ -171,7 +172,7 @@ public class Project extends AbstractModification {
       System.out.println();
 
       // print the table of values and get the id of the value to update
-      String id = this.promptTable(this.tableName, this.idColNum, this.colsToPrint);
+      String id = this.promptTable(this.procedure, this.idColNum, this.colsToPrint);
 
       // define participating variables
       PreparedStatement pstmt;
@@ -200,26 +201,25 @@ public class Project extends AbstractModification {
         // get new name
         String curName = rs.getString(3);
         this.printCurrentValue("name", curName);
-        // TODO MYSQL DUPLICATE CHECK
         String name = this.promptUpdateWhileEmpty(this.in, "name");
         pstmt.setString(1, name);
 
         // get new intervention
         String curInterventionID = rs.getString(1);
-        // TODO get cause area name of the cause with this id (use procedure)
-        // FIXME print cause area name instead of id here
+        // TODO get intervention name of the cause with this id (use procedure)
+        // FIXME print intervention name instead of id here
         this.printCurrentValue("intervention", curInterventionID);
-        String interventionID = this.promptTable("intervention",
+        String interventionID = this.promptTable("getInterventions()",
             1, new int[]{1, 2, 3});
         pstmt.setString(2, interventionID);
 
         // get new charity
         String curCharityID = rs.getString(2);
-        // TODO get cause area name of the cause with this id (use procedure)
-        // FIXME print cause area name instead of id here
+        // TODO get charity name of the cause with this id (use procedure)
+        // FIXME print charity name instead of id here
         this.printCurrentValue("charity", curCharityID);
-        String charityID = this.promptTable("charity",
-            1, new int[]{2, 3, 5, 6, 7});
+        String charityID = this.promptTable("getCharities()",
+            1, new int[]{2, 3, 4, 5, 6});
         pstmt.setString(3, charityID);
 
         // get new year

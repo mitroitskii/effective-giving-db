@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 /**
- * Represents the New Donor menu.
+ * Represents a menu for a new donor.
  */
 public class NewDonor extends AbstractModification {
 
@@ -20,6 +20,7 @@ public class NewDonor extends AbstractModification {
     super(conn, in,
         "Donor",
         "donor",
+        "getDonors()",
         1,
         "donor_id",
         new int[]{2, 3, 4, 5, 6, 7});
@@ -29,10 +30,19 @@ public class NewDonor extends AbstractModification {
   Helper method
    */
   private boolean checkRank(String income) {
-    try {
-      Integer.parseInt(income);
+    // FIXME fix for an actual income check to check for int
+//    try {
+//      Float.parseFloat(income);
+//      return true;
+//    } catch (NumberFormatException e) {
+//      return false;
+//    }
+    if (income.matches("\\d{1,2}.\\d\\d")) {
       return true;
-    } catch (NumberFormatException e) {
+    } else {
+      System.out.println();
+      System.out.println("❌ An income should be a integer");
+      System.out.println();
       return false;
     }
   }
@@ -68,11 +78,11 @@ public class NewDonor extends AbstractModification {
 
       // get country
       System.out.println("4️⃣ What is your country of residence?");
-      countryID = this.promptTable("country", 1, new int[]{2});
+      countryID = this.promptTable("getAllCountries()", 1, new int[]{2});
 
       // get source
       System.out.println("5️⃣ How did you learn about us?");
-      sourceID = this.promptTable("source", 1, new int[]{2});
+      sourceID = this.promptTable("getSources()", 1, new int[]{2});
 
       // get income rate
       rank = this.promptWhileInputEmpty(this.in,
@@ -111,6 +121,11 @@ public class NewDonor extends AbstractModification {
       }
     }
 
+  }
+
+  @Override
+  public void run() throws SQLException {
+    this.add();
   }
 
   @Override

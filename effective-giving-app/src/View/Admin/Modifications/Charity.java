@@ -24,9 +24,10 @@ public class Charity extends AbstractModification {
     super(conn, in,
         "Charity",
         "charity",
+        "getCharities()",
         1,
         "charity_id",
-        new int[]{2, 3, 5, 6, 7});
+        new int[]{2, 3, 4, 5, 6});
   }
 
 
@@ -91,7 +92,6 @@ public class Charity extends AbstractModification {
 
       // get name
       name = this.promptAddWhileEmpty(this.in, "name");
-      // TODO MYSQL DUPLICATE CHECK
 
       // get website
       website = this.promptAddWhileEmpty(this.in, "website");
@@ -104,7 +104,7 @@ public class Charity extends AbstractModification {
 
       // get a table of causes
       System.out.println("❓ Which cause area does this charity work in?");
-      causeID = this.promptTable("cause_area", 1, new int[]{2});
+      causeID = this.promptTable("getCauseAreas()", 1, new int[]{2});
 
       // get direct donation link
       link = this.promptAdd(this.in, "direct donation link");
@@ -142,7 +142,7 @@ public class Charity extends AbstractModification {
       System.out.println();
 
       // print the table of values and get the id of the value to update
-      String id = this.promptTable(this.tableName, this.idColNum, this.colsToPrint);
+      String id = this.promptTable(this.procedure, this.idColNum, this.colsToPrint);
 
       // define participating variables
       PreparedStatement pstmt;
@@ -201,7 +201,7 @@ public class Charity extends AbstractModification {
         // FIXME print cause area name instead of id here
         this.printCurrentValue("cause area", curCauseID);
         System.out.println("❓ Which cause area does this charity work in?");
-        String causeID = this.promptTable("cause_area", 1, new int[]{2});
+        String causeID = this.promptTable("getCauseAreas()", 1, new int[]{2});
         pstmt.setString(5, causeID);
 
         // get new link

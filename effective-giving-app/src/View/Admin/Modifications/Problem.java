@@ -22,9 +22,10 @@ public class Problem extends AbstractModification {
     super(conn, in,
         "Problem",
         "problem",
+        "getProblems()",
         1,
         "problem_id",
-        new int[]{2, 3});
+        new int[]{2, 4});
   }
 
   @Override
@@ -41,7 +42,7 @@ public class Problem extends AbstractModification {
       // TODO MYSQL DUPLICATE CHECK
       System.out.println();
       System.out.println("❓ What is the cause area of this problem?");
-      causeID = this.promptTable("cause_area", 1, new int[]{2});
+      causeID = this.promptTable("getCauseAreas()", 1, new int[]{2});
       try {
         pstmt = conn.prepareStatement(query);
         pstmt.clearParameters();
@@ -68,7 +69,7 @@ public class Problem extends AbstractModification {
       System.out.println();
 
       // print the table of values and get the id of the value to update
-      String id = this.promptTable(this.tableName, this.idColNum, this.colsToPrint);
+      String id = this.promptTable(this.procedure, this.idColNum, this.colsToPrint);
 
       // define participating variables
       PreparedStatement pstmt;
@@ -106,7 +107,7 @@ public class Problem extends AbstractModification {
         this.printCurrentValue("cause area", curCauseID);
         // TODO MYSQL DUPLICATE CHECK
         System.out.println("❓ What is the new cause area of this problem?");
-        String causeID = this.promptTable("cause_area", 1, new int[]{2});
+        String causeID = this.promptTable("getCauseAreas()", 1, new int[]{2});
         pstmt.setString(2, causeID);
 
         // set the id value for the row in the query

@@ -22,6 +22,7 @@ public class CauseArea extends AbstractModification {
     super(conn, in,
         "Cause Area",
         "cause_area",
+        "getCauseAreas()",
         1,
         "cause_id",
         new int[]{2});
@@ -65,7 +66,7 @@ public class CauseArea extends AbstractModification {
       System.out.println();
 
       // print the table of values and get the id of the value to update
-      String id = this.promptTable(this.tableName, this.idColNum, this.colsToPrint);
+      String id = this.promptTable(this.procedure, this.idColNum, this.colsToPrint);
 
       // define participating variables
       PreparedStatement pstmt;
@@ -92,7 +93,6 @@ public class CauseArea extends AbstractModification {
         // get new name
         String curName = rs.getString(2);
         this.printCurrentValue("name", curName);
-        // TODO MYSQL DUPLICATE CHECK
         String name = this.promptUpdateWhileEmpty(this.in, "name");
         pstmt.setString(1, name);
 
