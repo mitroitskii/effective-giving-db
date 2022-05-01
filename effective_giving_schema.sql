@@ -56,9 +56,9 @@ CREATE TABLE project (
 	-- checking that the cause area of the project matches the cause area of the charity
 	intervention VARCHAR(64) NOT NULL,
     charity INT NOT NULL,
-    project_name VARCHAR(64) NOT NULL, 
+    project_name VARCHAR(64) UNIQUE NOT NULL,
 	year_init YEAR NOT NULL,
-	project_status ENUM("Active", "Completed", "Planned", "Frozen"),
+	project_status ENUM("Active", "Completed", "Planned", "Frozen") NOT NULL,
     PRIMARY KEY (project_name, charity, intervention),
     FOREIGN KEY (intervention) REFERENCES intervention(intervention_name)
 		ON UPDATE CASCADE ON DELETE RESTRICT,
